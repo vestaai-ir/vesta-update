@@ -1,0 +1,348 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* vesta_update
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0+e-20261109\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-16 01:13+0000\n"
+"PO-Revision-Date: 2026-11-16 01:13+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "%s is not a Vesta module of an allowed repository."
+msgstr "%s ماژول وستا از یک مخزن مجاز نیست."
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "%s is not installed."
+msgstr "%s نصب نیست."
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid ""
+") is newer than the database: press Upgrade,\n"
+"                                        or restart Odoo with"
+msgstr ") از پایگاه داده جدیدتر است: «ارتقا» را بزنید، یا اودو را یک بار با"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "-u"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid ""
+"Applying updates is not enabled on this server (vesta_update_apply = True in"
+" odoo.conf)."
+msgstr "اعمال به‌روزرسانی روی این سرور فعال نیست (vesta_update_apply = True در odoo.conf)."
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Check for updates"
+msgstr "بررسی به‌روزرسانی"
+
+#. module: vesta_update
+#: model:ir.model.fields,field_description:vesta_update.field_vesta_update__display_name
+msgid "Display Name"
+msgstr "نام نمایشی"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Download the archive"
+msgstr "دانلود فایل"
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "Downloads are only allowed from GitHub: %s"
+msgstr "دانلود فقط از گیت‌هاب مجاز است: %s"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.js:0
+msgid "Error"
+msgstr "خطا"
+
+#. module: vesta_update
+#: model:ir.model.fields,field_description:vesta_update.field_vesta_update__id
+msgid "ID"
+msgstr "شناسه"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Install files"
+msgstr "نصب فایل‌ها"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Installed"
+msgstr "نصب‌شده"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Last check:"
+msgstr "آخرین بررسی:"
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "Links are not allowed in the archive: %s"
+msgstr "لینک در فایل فشرده مجاز نیست: %s"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Module"
+msgstr "ماژول"
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "New versions are published:"
+msgstr "نسخه‌های جدید منتشر شده‌اند:"
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "No published update to apply: check for updates first."
+msgstr "به‌روزرسانی منتشرشده‌ای برای اعمال نیست: اول به‌روزرسانی را بررسی کنید."
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.js:0
+msgid "Not published"
+msgstr "منتشر نشده"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "On the server"
+msgstr "روی سرور"
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "Only administrators can do this."
+msgstr "فقط مدیران می‌توانند این کار را انجام دهند."
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Published"
+msgstr "منتشرشده"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Release notes"
+msgstr "یادداشت انتشار"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.js:0
+msgid "Restart Odoo"
+msgstr "راه‌اندازی دوباره‌ی اودو"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Restore previous version"
+msgstr "بازگرداندن نسخه‌ی قبلی"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Status"
+msgstr "وضعیت"
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The archive contains version %(found)s, not %(expected)s."
+msgstr "فایل فشرده نسخه‌ی %(found)s را دارد، نه %(expected)s."
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The archive does not match its sha256: nothing was changed."
+msgstr "فایل فشرده با sha256 خود نمی‌خواند: چیزی تغییر نکرد."
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The archive has no %s."
+msgstr "فایل فشرده %s ندارد."
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The archive is empty."
+msgstr "فایل فشرده خالی است."
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The archive is larger than %s MB."
+msgstr "فایل فشرده بزرگ‌تر از %s مگابایت است."
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The archive must only contain the folder %(module)s/ (found %(name)s)."
+msgstr "فایل فشرده فقط باید پوشه‌ی %(module)s/ را داشته باشد (%(name)s پیدا شد)."
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "The code on the server ("
+msgstr "کد روی سرور ("
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The database is already up to date with the code on the server."
+msgstr "پایگاه داده با کد روی سرور به‌روز است."
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The download was redirected outside GitHub: %s"
+msgstr "دانلود به بیرون از گیت‌هاب هدایت شد: %s"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.js:0
+msgid ""
+"The files of %(module)s %(version)s are on the server. Restart Odoo, then "
+"press Upgrade."
+msgstr "فایل‌های %(module)s %(version)s روی سرور است. اودو را دوباره راه‌اندازی کنید و بعد «ارتقا» را بزنید."
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The module folder is not writable by the Odoo server."
+msgstr "سرور اودو اجازه‌ی نوشتن در پوشه‌ی ماژول را ندارد."
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The module folder was not found."
+msgstr "پوشه‌ی ماژول پیدا نشد."
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The module is in a git checkout: update it with git."
+msgstr "ماژول در یک مخزن git است: آن را با git به‌روز کنید."
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.js:0
+msgid "The previous files of %(module)s are back. Restart Odoo."
+msgstr "فایل‌های قبلی %(module)s برگشت. اودو را دوباره راه‌اندازی کنید."
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "There is no backup of %s to restore."
+msgstr "پشتیبانی از %s برای بازگرداندن نیست."
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "Unsafe path in the archive: %s"
+msgstr "مسیر ناامن در فایل فشرده: %s"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.js:0
+msgid "Up to date"
+msgstr "به‌روز"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.js:0
+msgid "Update available"
+msgstr "به‌روزرسانی موجود است"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid ""
+"Updates can be checked here. To install them from this page, the server "
+"owner adds"
+msgstr "به‌روزرسانی‌ها اینجا بررسی می‌شوند. برای نصب آن‌ها از همین صفحه، مدیر سرور این خط را"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Upgrade"
+msgstr "ارتقا"
+
+#. module: vesta_update
+#: model:ir.module.module,summary:base.module_vesta_update
+msgid "Versions, changelogs and updates of the Vesta modules"
+msgstr "نسخه، تغییرات و به‌روزرسانی ماژول‌های وستا"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+#: model:ir.actions.client,name:vesta_update.action_vesta_update
+#: model:ir.module.module,shortdesc:base.module_vesta_update
+#: model:ir.ui.menu,name:vesta_update.menu_vesta_update
+msgid "Vesta Updates"
+msgstr "به‌روزرسانی‌های وستا"
+
+#. module: vesta_update
+#: model:ir.model,name:vesta_update.model_vesta_update
+msgid "Vesta module updates"
+msgstr "به‌روزرسانی ماژول‌های وستا"
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "Vesta updates available"
+msgstr "به‌روزرسانی وستا موجود است"
+
+#. module: vesta_update
+#: model:ir.actions.server,name:vesta_update.ir_cron_vesta_update_check_ir_actions_server
+msgid "Vesta: check for updates"
+msgstr "وستا: بررسی به‌روزرسانی"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "What's new"
+msgstr "تازه‌ها"
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid ""
+"to the Odoo configuration file; otherwise download\n"
+"                    the archive from the release and replace the module folder by hand."
+msgstr "به فایل تنظیمات اودو اضافه می‌کند؛ وگرنه فایل فشرده را از release دانلود کنید و پوشه‌ی ماژول را دستی جایگزین کنید."
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "vesta_update_apply = True"
+msgstr ""

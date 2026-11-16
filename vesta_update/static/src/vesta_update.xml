@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+    <t t-name="vesta_update.Control">
+        <div class="o_action o_vesta_update h-100 overflow-auto bg-view">
+            <div class="container py-4" t-if="this.state.data">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <h1 class="h4 mb-0 me-auto">Vesta Updates</h1>
+                    <span class="text-muted small" t-if="this.state.data.checked_at">
+                        Last check: <t t-out="this.state.data.checked_at"/>
+                    </span>
+                    <button class="btn btn-primary" t-if="this.state.data.is_admin" t-att-disabled="this.state.busy" t-on-click="this.checkUpdates">
+                        <i class="oi me-1" t-att-data-icon="this.state.busy ? 'hourglass_empty' : 'sync'"/>Check for updates
+                    </button>
+                </div>
+                <div class="alert alert-secondary small" t-if="this.state.data.is_admin and !this.state.data.apply_enabled">
+                    Updates can be checked here. To install them from this page, the server owner adds
+                    <code>vesta_update_apply = True</code> to the Odoo configuration file; otherwise download
+                    the archive from the release and replace the module folder by hand.
+                </div>
+                <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Module</th>
+                            <th>Installed</th>
+                            <th>On the server</th>
+                            <th>Published</th>
+                            <th>Status</th>
+                            <th/>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="this.state.data.modules" t-as="module" t-key="module.name">
+                            <tr>
+                                <td>
+                                    <div class="fw-bold" t-out="module.title"/>
+                                    <div class="small text-muted"><t t-out="module.name"/> · <t t-out="module.repo"/></div>
+                                </td>
+                                <td t-out="module.installed"/>
+                                <td t-out="module.code"/>
+                                <td t-out="module.check.latest or '-'"/>
+                                <td>
+                                    <span t-if="module.check.state" class="badge" t-att-class="this.stateClass(module.check.state)" t-out="this.stateLabels[module.check.state] or module.check.state"/>
+                                    <div t-if="module.check.error" class="small text-danger" t-out="module.check.error"/>
+                                </td>
+                                <td class="text-end text-nowrap">
+                                    <t t-if="this.state.data.is_admin">
+                                        <button t-if="module.upgrade_pending" class="btn btn-sm btn-primary ms-1" t-att-disabled="this.state.busy" t-on-click="() => this.upgradeModule(module)">Upgrade</button>
+                                        <button t-if="module.check.state === 'update_available' and module.check.release and !module.blocker" class="btn btn-sm btn-secondary ms-1" t-att-disabled="this.state.busy" t-on-click="() => this.applyUpdate(module)">Install files</button>
+                                        <button t-if="module.check.backup and !module.blocker" class="btn btn-sm btn-link ms-1" t-att-disabled="this.state.busy" t-on-click="() => this.restoreBackup(module)">Restore previous version</button>
+                                    </t>
+                                </td>
+                            </tr>
+                            <tr t-if="module.upgrade_pending or module.check.changelog?.length or (module.check.state === 'update_available' and module.blocker)" class="o_vesta_update_details">
+                                <td colspan="6" class="small border-top-0 pt-0">
+                                    <div t-if="module.upgrade_pending" class="text-warning-emphasis">
+                                        The code on the server (<t t-out="module.code"/>) is newer than the database: press Upgrade,
+                                        or restart Odoo with <code>-u <t t-out="module.name"/></code>.
+                                    </div>
+                                    <div t-if="module.check.state === 'update_available' and module.blocker" class="text-muted">
+                                        <t t-out="module.blocker"/>
+                                        <t t-if="module.check.release">
+                                            <a class="ms-1" t-att-href="module.check.release.zip_url" target="_blank">Download the archive</a>
+                                        </t>
+                                    </div>
+                                    <details t-if="module.check.changelog?.length" class="mt-1">
+                                        <summary>What's new</summary>
+                                        <t t-foreach="module.check.changelog" t-as="entry" t-key="entry.version">
+                                            <div class="fw-bold mt-2" t-out="entry.version"/>
+                                            <pre class="mb-0 text-wrap" t-out="entry.notes"/>
+                                        </t>
+                                        <a t-if="module.check.release" t-att-href="module.check.release.url" target="_blank">Release notes</a>
+                                    </details>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

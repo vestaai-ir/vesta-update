@@ -1,0 +1,348 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* vesta_update
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 20.0+e-20261109\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-16 01:13+0000\n"
+"PO-Revision-Date: 2026-11-16 01:13+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "%s is not a Vesta module of an allowed repository."
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "%s is not installed."
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid ""
+") is newer than the database: press Upgrade,\n"
+"                                        or restart Odoo with"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "-u"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid ""
+"Applying updates is not enabled on this server (vesta_update_apply = True in"
+" odoo.conf)."
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Check for updates"
+msgstr ""
+
+#. module: vesta_update
+#: model:ir.model.fields,field_description:vesta_update.field_vesta_update__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Download the archive"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "Downloads are only allowed from GitHub: %s"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.js:0
+msgid "Error"
+msgstr ""
+
+#. module: vesta_update
+#: model:ir.model.fields,field_description:vesta_update.field_vesta_update__id
+msgid "ID"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Install files"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Installed"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Last check:"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "Links are not allowed in the archive: %s"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Module"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "New versions are published:"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "No published update to apply: check for updates first."
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.js:0
+msgid "Not published"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "On the server"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "Only administrators can do this."
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Published"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Release notes"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.js:0
+msgid "Restart Odoo"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Restore previous version"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Status"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The archive contains version %(found)s, not %(expected)s."
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The archive does not match its sha256: nothing was changed."
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The archive has no %s."
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The archive is empty."
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The archive is larger than %s MB."
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The archive must only contain the folder %(module)s/ (found %(name)s)."
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "The code on the server ("
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The database is already up to date with the code on the server."
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The download was redirected outside GitHub: %s"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.js:0
+msgid ""
+"The files of %(module)s %(version)s are on the server. Restart Odoo, then "
+"press Upgrade."
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The module folder is not writable by the Odoo server."
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The module folder was not found."
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "The module is in a git checkout: update it with git."
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.js:0
+msgid "The previous files of %(module)s are back. Restart Odoo."
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "There is no backup of %s to restore."
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "Unsafe path in the archive: %s"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.js:0
+msgid "Up to date"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.js:0
+msgid "Update available"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid ""
+"Updates can be checked here. To install them from this page, the server "
+"owner adds"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "Upgrade"
+msgstr ""
+
+#. module: vesta_update
+#: model:ir.module.module,summary:base.module_vesta_update
+msgid "Versions, changelogs and updates of the Vesta modules"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+#: model:ir.actions.client,name:vesta_update.action_vesta_update
+#: model:ir.module.module,shortdesc:base.module_vesta_update
+#: model:ir.ui.menu,name:vesta_update.menu_vesta_update
+msgid "Vesta Updates"
+msgstr ""
+
+#. module: vesta_update
+#: model:ir.model,name:vesta_update.model_vesta_update
+msgid "Vesta module updates"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-python
+#: code:addons/vesta_update/models/vesta_update.py:0
+msgid "Vesta updates available"
+msgstr ""
+
+#. module: vesta_update
+#: model:ir.actions.server,name:vesta_update.ir_cron_vesta_update_check_ir_actions_server
+msgid "Vesta: check for updates"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "What's new"
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid ""
+"to the Odoo configuration file; otherwise download\n"
+"                    the archive from the release and replace the module folder by hand."
+msgstr ""
+
+#. module: vesta_update
+#. odoo-javascript
+#: code:addons/vesta_update/static/src/vesta_update.xml:0
+msgid "vesta_update_apply = True"
+msgstr ""

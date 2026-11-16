@@ -3,7 +3,7 @@
 {
     "name": "Vesta Updates",
     "summary": "Versions, changelogs and updates of the Vesta modules",
-    "version": "20.0.1.0.0",
+    "version": "20.0.1.1.0",
     "category": "Hidden/Tools",
     "website": "https://github.com/vestaai-ir/vesta-l10n-iran",
     "author": "Vesta AI",

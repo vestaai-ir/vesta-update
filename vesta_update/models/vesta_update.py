@@ -2,17 +2,21 @@
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
 """Versions and updates of the Vesta modules installed in this database.
 
-Each Vesta module names its public repository in its manifest (``website``). A check reads
+Each Vesta module names its GitHub repository in its manifest (``website``). A check reads
 the module's version on the release branch and the latest GitHub release that ships
-``<module>.zip`` with its ``<module>.zip.sha256``.
+``<module>.zip`` with its ``<module>.zip.sha256`` and ``<module>.zip.sig``. Private
+repositories (the Enterprise modules) are read with the server's read-only token
+(``vesta_update_github_token``).
 
 Applying an update replaces the module's folder on the server, so it is guarded:
 
 - the server owner must allow it in the Odoo configuration (``vesta_update_apply = True``);
 - the repository must belong to an allowed GitHub owner (``vesta_update_owners``,
   ``vestaai-ir`` by default);
-- the archive is downloaded from GitHub only, checked against its sha256, must contain
-  only the module's folder (no absolute path, ``..`` or link) and the announced version;
+- the archive is downloaded from GitHub only, checked against its sha256 and its Ed25519
+  signature (keys in ``keys/``, or ``vesta_update_signing_keys``; ``vesta_update_allow_unsigned``
+  turns the signature off for forks), must contain only the module's folder (no absolute
+  path, ``..`` or link) and the announced version;
 - the module folder must be writable and not part of a git checkout (developers update
   with git, not here).
 
@@ -23,6 +27,7 @@ database.
 """
 
 import ast
+import base64
 import hashlib
 import io
 import json
@@ -38,6 +43,9 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import requests
+from cryptography.exceptions import InvalidSignature
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 
 from odoo import _, api, fields, models, tools
 from odoo.exceptions import AccessError, UserError
@@ -52,7 +60,13 @@ DEFAULT_OWNERS = ("vestaai-ir",)
 TIMEOUT = 8
 DOWNLOAD_TIMEOUT = 60
 MAX_ARCHIVE_SIZE = 50 * 1024 * 1024
-DOWNLOAD_HOSTS = {"github.com", "objects.githubusercontent.com", "release-assets.githubusercontent.com"}
+DOWNLOAD_HOSTS = {
+    "github.com",
+    "api.github.com",
+    "objects.githubusercontent.com",
+    "release-assets.githubusercontent.com",
+}
+KEYS_DIR = Path(__file__).resolve().parent.parent / "keys"
 REPO_RE = re.compile(r"^https://github\.com/([\w.-]+)/([\w.-]+?)(?:\.git)?/?(?:$|/)")
 HISTORY_TITLE_RE = re.compile(r"^##\s+(\S+)\s*$", re.MULTILINE)
 
@@ -195,7 +209,18 @@ class VestaUpdate(models.AbstractModel):
     # Check (GitHub)
     # ------------------------------------------------------------------
 
+    def _github_token(self):
+        """Read-only GitHub token of the server (``vesta_update_github_token``), for private repositories."""
+        return tools.config.get("vesta_update_github_token") or None
+
+    def _headers(self, accept="application/vnd.github+json"):
+        headers = {"Accept": accept}
+        if token := self._github_token():
+            headers["Authorization"] = f"Bearer {token}"
+        return headers
+
     def _get(self, url, **kwargs):
+        kwargs.setdefault("headers", self._headers())
         response = requests.get(url, timeout=kwargs.pop("timeout", TIMEOUT), **kwargs)
         if response.status_code == 404:
             return None
@@ -203,26 +228,30 @@ class VestaUpdate(models.AbstractModel):
         return response
 
     def _fetch_releases(self, repo):
-        response = self._get(
-            f"https://api.github.com/repos/{repo}/releases?per_page=30",
-            headers={"Accept": "application/vnd.github+json"},
-        )
+        response = self._get(f"https://api.github.com/repos/{repo}/releases?per_page=30")
         return response.json() if response is not None else []
 
     def _find_release(self, releases, module):
-        """Latest release shipping ``<module>.zip`` and its sha256."""
+        """Latest release shipping ``<module>.zip`` and its sha256 (and signature, ``.sig``).
+
+        Each file has its public URL and its API URL; the API one works for private repositories.
+        """
+        files = {"zip": f"{module}.zip", "sha256": f"{module}.zip.sha256", "sig": f"{module}.zip.sig"}
         for release in releases:
             if release.get("draft") or release.get("prerelease"):
                 continue
-            assets = {asset.get("name"): asset.get("browser_download_url") for asset in release.get("assets", [])}
-            if f"{module}.zip" in assets and f"{module}.zip.sha256" in assets:
-                return {
+            assets = {asset.get("name"): asset for asset in release.get("assets", [])}
+            if files["zip"] in assets and files["sha256"] in assets:
+                result = {
                     "tag": release.get("tag_name"),
                     "url": release.get("html_url"),
                     "published_at": release.get("published_at"),
-                    "zip_url": assets[f"{module}.zip"],
-                    "sha256_url": assets[f"{module}.zip.sha256"],
                 }
+                for key, name in files.items():
+                    if asset := assets.get(name):
+                        result[f"{key}_url"] = asset.get("browser_download_url")
+                        result[f"{key}_api_url"] = asset.get("url")
+                return result
         return None
 
     def _raw(self, repo, branch, path):
@@ -307,7 +336,9 @@ class VestaUpdate(models.AbstractModel):
     def _download(self, url, max_size=MAX_ARCHIVE_SIZE):
         if urlparse(url).hostname not in DOWNLOAD_HOSTS or urlparse(url).scheme != "https":
             raise UserError(_("Downloads are only allowed from GitHub: %s", url))
-        response = requests.get(url, timeout=DOWNLOAD_TIMEOUT, stream=True)
+        # requests drops the token when GitHub redirects to its file storage
+        headers = self._headers("application/octet-stream")
+        response = requests.get(url, timeout=DOWNLOAD_TIMEOUT, stream=True, headers=headers)
         response.raise_for_status()
         if urlparse(response.url).hostname not in DOWNLOAD_HOSTS:
             raise UserError(_("The download was redirected outside GitHub: %s", response.url))
@@ -317,6 +348,42 @@ class VestaUpdate(models.AbstractModel):
             if data.tell() > max_size:
                 raise UserError(_("The archive is larger than %s MB.", max_size // (1024 * 1024)))
         return data.getvalue()
+
+    def _asset_url(self, release, key):
+        """API URL with a token (private repositories), public URL otherwise."""
+        if self._github_token() and release.get(f"{key}_api_url"):
+            return release[f"{key}_api_url"]
+        return release.get(f"{key}_url")
+
+    def _trusted_keys(self):
+        """Ed25519 public keys of the Vesta releases (``keys/*.pub``) and ``vesta_update_signing_keys``."""
+        paths = sorted(KEYS_DIR.glob("*.pub"))
+        if extra := tools.config.get("vesta_update_signing_keys"):
+            paths += [Path(path.strip()) for path in extra.split(",") if path.strip()]
+        keys = []
+        for path in paths:
+            key = serialization.load_pem_public_key(path.read_bytes())
+            if isinstance(key, Ed25519PublicKey):
+                keys.append(key)
+        return keys
+
+    def _check_signature(self, content, release):
+        """Refuse an archive without a valid signature of a trusted key."""
+        if str(tools.config.get("vesta_update_allow_unsigned") or "").lower() in ("1", "true", "yes"):
+            return
+        if not self._asset_url(release, "sig"):
+            raise UserError(_("The release has no signature (.sig): nothing was changed."))
+        try:
+            signature = base64.b64decode(self._download(self._asset_url(release, "sig"), max_size=4096).strip())
+        except ValueError:
+            signature = b""
+        for key in self._trusted_keys():
+            try:
+                key.verify(signature, content)
+                return
+            except InvalidSignature:
+                continue
+        raise UserError(_("The signature of the archive is not valid: nothing was changed."))
 
     def _backup_root(self):
         return Path(tools.config["data_dir"]) / "vesta_update" / "backups" / self.env.cr.dbname
@@ -356,16 +423,17 @@ class VestaUpdate(models.AbstractModel):
         status = self._load_status()
         check = status.get(module_name) or {}
         release = check.get("release") or {}
-        if check.get("state") != "update_available" or not release.get("zip_url"):
+        if check.get("state") != "update_available" or not self._asset_url(release, "zip"):
             raise UserError(_("No published update to apply: check for updates first."))
         if blocker := self._apply_blocker(module_name):
             raise UserError(blocker)
         if module_name not in {module.name for module, _manifest, _repo in self._vesta_modules()}:
             raise UserError(_("%s is not a Vesta module of an allowed repository.", module_name))
-        content = self._download(release["zip_url"])
-        expected = self._download(release["sha256_url"], max_size=4096).decode().split()[0].lower()
+        content = self._download(self._asset_url(release, "zip"))
+        expected = self._download(self._asset_url(release, "sha256"), max_size=4096).decode().split()[0].lower()
         if hashlib.sha256(content).hexdigest() != expected:
             raise UserError(_("The archive does not match its sha256: nothing was changed."))
+        self._check_signature(content, release)
         backup = self._install_archive(module_name, content, check["latest"])
         _logger.info(
             "Vesta update: %s %s installed in place, previous files in %s", module_name, check["latest"], backup

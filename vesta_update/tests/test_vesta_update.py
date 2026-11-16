@@ -34,7 +34,7 @@ HISTORY = """## 20.0.1.2.0
 RELEASES = [
     {
         "tag_name": "v20.0.1.2.0",
-        "html_url": "https://github.com/vestaai-ir/vesta-l10n-iran/releases/tag/v20.0.1.2.0",
+        "html_url": "https://github.com/vestaai-ir/vesta-update/releases/tag/v20.0.1.2.0",
         "assets": [
             {
                 "name": "vesta_fake.zip",
@@ -69,8 +69,8 @@ class TestVestaUpdate(TransactionCase):
         self.Update = self.env["vesta.update"].with_context(lang="en_US")
         # a plain stub: new() records are emptied when a test expects an error
         self.fake = SimpleNamespace(name="vesta_fake", latest_version="20.0.1.0.0")
-        manifest = {"version": "20.0.1.0.0", "website": "https://github.com/vestaai-ir/vesta-l10n-iran"}
-        for target, value in (("_vesta_modules", lambda _self: [(self.fake, manifest, "vestaai-ir/vesta-l10n-iran")]),):
+        manifest = {"version": "20.0.1.0.0", "website": "https://github.com/vestaai-ir/vesta-update"}
+        for target, value in (("_vesta_modules", lambda _self: [(self.fake, manifest, "vestaai-ir/vesta-update")]),):
             patcher = patch.object(type(self.Update), target, value)
             patcher.start()
             self.addCleanup(patcher.stop)
@@ -112,9 +112,7 @@ class TestVestaUpdate(TransactionCase):
             return self.Update.apply_update("vesta_fake")
 
     def test_helpers(self):
-        self.assertEqual(
-            repo_of({"website": "https://github.com/vestaai-ir/vesta-l10n-iran"}), "vestaai-ir/vesta-l10n-iran"
-        )
+        self.assertEqual(repo_of({"website": "https://github.com/vestaai-ir/vesta-update"}), "vestaai-ir/vesta-update")
         self.assertIsNone(repo_of({"website": "https://vestaai.ir"}))
         self.assertGreater(parse_version("20.0.1.10.0"), parse_version("20.0.1.9.0"))
         notes = changelog_between(HISTORY, "20.0.1.0.0", "20.0.1.2.0")

@@ -89,7 +89,7 @@ Changelog
 Bug Tracker
 ===========
 
-Report bugs on `GitHub Issues <https://github.com/vestaai-ir/vesta-l10n-iran/issues>`_.
+Report bugs on `GitHub Issues <https://github.com/vestaai-ir/vesta-update/issues>`_.
 
 Credits
 =======
@@ -107,4 +107,4 @@ Contributors
 Maintainers
 -----------
 
-This module is part of the `vestaai-ir/vesta-l10n-iran <https://github.com/vestaai-ir/vesta-l10n-iran/tree/20.0/vesta_update>`_ project on GitHub.
+This module is part of the `vestaai-ir/vesta-update <https://github.com/vestaai-ir/vesta-update/tree/20.0/vesta_update>`_ project on GitHub.

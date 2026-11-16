@@ -5,7 +5,7 @@
     "summary": "Versions, changelogs and updates of the Vesta modules",
     "version": "20.0.1.1.0",
     "category": "Hidden/Tools",
-    "website": "https://github.com/vestaai-ir/vesta-l10n-iran",
+    "website": "https://github.com/vestaai-ir/vesta-update",
     "author": "Vesta AI",
     "license": "LGPL-3",
     "installable": True,

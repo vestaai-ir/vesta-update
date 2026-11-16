@@ -1,5 +1,6 @@
 # Copyright 2026 Vesta AI (https://vestaai.ir)
 # License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl).
+import base64
 import hashlib
 import io
 import tempfile
@@ -7,6 +8,8 @@ import zipfile
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
+
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from odoo.exceptions import UserError
 from odoo.tests import TransactionCase, tagged
@@ -33,8 +36,13 @@ RELEASES = [
         "tag_name": "v20.0.1.2.0",
         "html_url": "https://github.com/vestaai-ir/vesta-l10n-iran/releases/tag/v20.0.1.2.0",
         "assets": [
-            {"name": "vesta_fake.zip", "browser_download_url": "https://github.com/x/vesta_fake.zip"},
+            {
+                "name": "vesta_fake.zip",
+                "browser_download_url": "https://github.com/x/vesta_fake.zip",
+                "url": "https://api.github.com/repos/x/releases/assets/1",
+            },
             {"name": "vesta_fake.zip.sha256", "browser_download_url": "https://github.com/x/vesta_fake.zip.sha256"},
+            {"name": "vesta_fake.zip.sig", "browser_download_url": "https://github.com/x/vesta_fake.zip.sig"},
         ],
     }
 ]
@@ -73,6 +81,11 @@ class TestVestaUpdate(TransactionCase):
             patcher = patch.object(vesta_update, name, value)
             patcher.start()
             self.addCleanup(patcher.stop)
+        # releases signed with a test key
+        self.key = Ed25519PrivateKey.generate()
+        patcher = patch.object(type(self.Update), "_trusted_keys", lambda _self: [self.key.public_key()])
+        patcher.start()
+        self.addCleanup(patcher.stop)
         patcher = patch.dict(config.options, {"vesta_update_apply": "True", "data_dir": str(self.tmp / "data")})
         patcher.start()
         self.addCleanup(patcher.stop)
@@ -88,11 +101,12 @@ class TestVestaUpdate(TransactionCase):
         ):
             return self.Update.check_updates()["vesta_fake"]
 
-    def _apply(self, archive, sha256=None):
+    def _apply(self, archive, sha256=None, key=None):
         downloads = {
             "https://github.com/x/vesta_fake.zip": archive,
             "https://github.com/x/vesta_fake.zip.sha256": (sha256 or hashlib.sha256(archive).hexdigest()).encode()
             + b"  vesta_fake.zip\n",
+            "https://github.com/x/vesta_fake.zip.sig": base64.b64encode((key or self.key).sign(archive)),
         }
         with patch.object(type(self.Update), "_download", lambda _self, url, max_size=0: downloads[url]):
             return self.Update.apply_update("vesta_fake")
@@ -169,3 +183,21 @@ class TestVestaUpdate(TransactionCase):
             self.assertEqual(notifications(), before + 1)
             self.Update.with_context(lang="en_US")._cron_check_updates()
             self.assertEqual(notifications(), before + 1, "the same version is announced once")
+
+    def test_signature(self):
+        self._check()
+        archive = make_zip({"vesta_fake/__manifest__.py": '{"version": "20.0.1.2.0"}'})
+        with self.assertRaisesRegex(UserError, "signature of the archive is not valid"):
+            self._apply(archive, key=Ed25519PrivateKey.generate())
+        self.assertIn("20.0.1.0.0", (self.module_path / "__manifest__.py").read_text())
+        # forks can turn the signature off explicitly
+        with patch.dict(config.options, {"vesta_update_allow_unsigned": "True"}):
+            self.assertEqual(self._apply(archive, key=Ed25519PrivateKey.generate())["state"], "restart_required")
+
+    def test_private_repository_token(self):
+        release = self.Update._find_release(RELEASES, "vesta_fake")
+        self.assertEqual(self.Update._asset_url(release, "zip"), "https://github.com/x/vesta_fake.zip")
+        with patch.dict(config.options, {"vesta_update_github_token": "test-token"}):
+            self.assertEqual(self.Update._asset_url(release, "zip"), "https://api.github.com/repos/x/releases/assets/1")
+            self.assertEqual(self.Update._headers()["Authorization"], "Bearer test-token")
+        self.assertNotIn("Authorization", self.Update._headers())
